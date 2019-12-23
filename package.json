@@ -1,0 +1,19 @@
+{
+  "name": "ui-testing-javascript-typescript-jest-puppeteer",
+  "version": "1.0.0",
+  "description": "It is a prototype project for experimental purposes using javascript/typescript/jest/puppeteer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nandorfivince/ui-testing-javascript-typescript-jest-puppeteer.git"
+  },
+  "author": "Nandorfi Vince",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nandorfivince/ui-testing-javascript-typescript-jest-puppeteer/issues"
+  },
+  "homepage": "https://github.com/nandorfivince/ui-testing-javascript-typescript-jest-puppeteer#readme"
+}
