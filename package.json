@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/nandorfivince/ui-testing-javascript-typescript-jest-puppeteer/issues"
   },
-  "homepage": "https://github.com/nandorfivince/ui-testing-javascript-typescript-jest-puppeteer#readme"
+  "homepage": "https://github.com/nandorfivince/ui-testing-javascript-typescript-jest-puppeteer#readme",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2",
+    "puppeteer": "^2.0.0"
+  }
 }
