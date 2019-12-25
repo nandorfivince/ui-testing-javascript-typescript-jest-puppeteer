@@ -7,7 +7,7 @@ describe('My first puppeteer test', () => {
 
     before(async function(){
         browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             sloMo: 0, // delay between each puppeteer actions
             devtools: false,
             timeout: 1000,
@@ -27,5 +27,14 @@ describe('My first puppeteer test', () => {
     it('My first test step', async ()=> {
         await page.goto("https://dev.to/")
         await page.waitForSelector("#nav-search")
+
+        const url = await page.url()
+        const title = await page.title()
+
+        await page.waitFor(3000) // only for debug purpose
+
+        expect(url).to.contain('dev')
+        expect(title).contain('Community')
+
     })
 })
