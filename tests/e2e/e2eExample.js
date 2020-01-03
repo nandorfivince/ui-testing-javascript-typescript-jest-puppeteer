@@ -3,6 +3,8 @@ const expect = require('chai')
 const config = require('../../lib/config')
 const helpers = require('../../lib/helpers')
 const utils = require('../../lib/utils')
+const homePage = require('../../page-objects/home-page')
+const loginPage = require('../../page-objects/login-page')
 
 let browser
 let page
@@ -27,38 +29,37 @@ after(async function() {
 })
 
 describe('Login Test', () => {
-    const LOGIN_FORM = "#login_form"
 
     it('should navigate to homepage', async () => {
         await helpers.loadUrl(page, config.zeroWebAppUrl)
-        await helpers.shouldExist(page, '#online_banking_features')
+        await helpers.shouldExist(page, homePage.BANKING_FEATURES)
     })
 
     it('should click on signin button', async () => {
-        await helpers.click(page, '#signin_button')
-        await helpers.shouldExist(page, LOGIN_FORM)
+        await helpers.click(page, homePage.SIGN_IN_BUTTON)
+        await helpers.shouldExist(page, loginPage.LOGIN_FORM)
     })
 
     it('should submit login form', async () => {
-        await helpers.typeText(page, untils.generateID(), '#user_login')
-        await helpers.typeText(page, untils.generateID(), '#user_password')
-        await helpers.click(page, '.btn-primary')
+        await helpers.typeText(page, untils.generateID(), loginPage.USER_NAME)
+        await helpers.typeText(page, untils.generateID(), loginPage.USER_PASSWORD)
+        await helpers.click(page, loginPage.SUBMIT_BUTTON)
     })
 
     it('should get error message', async () => {
         await helpers.waitForText(page, '#login_form > div.alert.alert-error', 'Login and/or password are wrong')
-        await helpers.shouldExist(page, LOGIN_FORM)
+        await helpers.shouldExist(page, loginPage.LOGIN_FORM)
     })
 })
 
 describe('Search Test', () => {
     it('should navigate to homepage', async () => {
         await helpers.loadUrl(page, config.zeroWebAppUrl)
-        await helpers.shouldExist(page, '#online_banking_features')
+        await helpers.shouldExist(page, homePage.BANKING_FEATURES)
     })
 
     it('should submit search phrase ', async () => {
-        await helpers.typeText(page, "hello world", '#searchTerm')
+        await helpers.typeText(page, "hello world", homePage.SEARCH_BAR)
         await helpers.pressKey(page, "Enter")
     })
 
@@ -71,7 +72,7 @@ describe('Search Test', () => {
 describe('Navbar Links Test', () => {
     it('should navigate to homepage', async () => {
         await helpers.loadUrl(page, config.zeroWebAppUrl)
-        await helpers.shouldExist(page, '#online_banking_features')
+        await helpers.shouldExist(page, homePage.BANKING_FEATURES)
     })
 
     it('should have correct number of links', async () => {
@@ -83,11 +84,11 @@ describe('Navbar Links Test', () => {
 describe('Navbar Links Test', () => {
     it('should navigate to homepage', async () => {
         await helpers.loadUrl(page, config.zeroWebAppUrl)
-        await helpers.shouldExist(page, '#online_banking_features')
+        await helpers.shouldExist(page, homePage.BANKING_FEATURES)
     })
 
     it('should click on feedback link', async () => {
-        await helpers.click(page, '#feedback')
+        await helpers.click(page, homePage.LINK_FEEDBACK)
         await helpers.shouldExist(page, 'form')
     })
 
@@ -102,14 +103,13 @@ describe('Navbar Links Test', () => {
     it('should display success message', async () => {
         await helpers.shouldExist(page, '#feedback-title')
         await helpers.waitForText(page, 'body', 'Thank you for your comments')
-
     })
 })
 
 describe('Forgotten Password', () => {
     it('should navigate to homepage', async () => {
         await helpers.loadUrl(page, config.zeroWebAppUrl)
-        await helpers.shouldExist(page, '#online_banking_features')
+        await helpers.shouldExist(page, homePage.BANKING_FEATURES)
     })
 
     it('should load forgotten password form', async () => {
@@ -124,6 +124,5 @@ describe('Forgotten Password', () => {
 
     it('should display success message', async () => {
         await helpers.waitForText(page, 'body', "Your password will be sent to the following email")
-
     })
 })
