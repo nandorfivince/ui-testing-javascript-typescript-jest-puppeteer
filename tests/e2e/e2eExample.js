@@ -5,6 +5,9 @@ const helpers = require('../../lib/helpers')
 const utils = require('../../lib/utils')
 const homePage = require('../../page-objects/home-page')
 const loginPage = require('../../page-objects/login-page')
+const searchResultsPage = require('../../page-objects/searchResults-page')
+const feedbackPage = require('../../page-objects/feedback-page')
+const feedbackResultsPage = require('../../page-objects/feedbackResults-page')
 
 let browser
 let page
@@ -64,8 +67,8 @@ describe('Search Test', () => {
     })
 
     it('should display search results', async () => {
-        await helpers.waitForText(page, 'h2', 'Search Results')
-        await helpers.waitForText(page, 'body', 'No results were found for the query')
+        await helpers.waitForText(page, searchResultsPage.SEARCH_RESULTS, 'Search Results')
+        await helpers.waitForText(page, searchResultsPage.SEARCH_RESULTS_CONTENT, 'No results were found for the query')
     })
 })
 
@@ -89,20 +92,20 @@ describe('Navbar Links Test', () => {
 
     it('should click on feedback link', async () => {
         await helpers.click(page, homePage.LINK_FEEDBACK)
-        await helpers.shouldExist(page, 'form')
+        await helpers.shouldExist(page, feedbackPage.FEEDBACK_FORM)
     })
 
     it('should submit the feedback form', async () => {
-        await helpers.typeText(page, 'Vince', '#name')
-        await helpers.typeText(page, utils.generateEmail(), '#email')
-        await helpers.typeText(page, 'Just Subject', '#subject')
-        await helpers.typeText(page, "just a comment", '#comment')
-        await helpers.click(page, 'input[type="submit"]')
+        await helpers.typeText(page, 'Vince', feedbackPage.FORM_NAME)
+        await helpers.typeText(page, utils.generateEmail(), feedbackPage.FORM_EMAIL)
+        await helpers.typeText(page, 'Just Subject', feedbackPage.FORM_SUBJECT)
+        await helpers.typeText(page, "just a comment", feedbackPage.FORM_COMMENT)
+        await helpers.click(page, feedbackPage.FORM_SUBMIT_BUTTON)
     })
 
     it('should display success message', async () => {
-        await helpers.shouldExist(page, '#feedback-title')
-        await helpers.waitForText(page, 'body', 'Thank you for your comments')
+        await helpers.shouldExist(page, feedbackResultsPage.FEEDBACK_RESULTS_TITLE)
+        await helpers.waitForText(page, FEEDBACK_RESULTS_CONTENT, 'Thank you for your comments')
     })
 })
 

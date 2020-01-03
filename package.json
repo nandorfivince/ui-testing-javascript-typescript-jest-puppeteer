@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "basic": "node node_modules/mocha/bin/mocha --timeout=30000 tests/basic",
-    "e2e": "node node_modules/mocha/bin/mocha --timeout=30000 tests/e2e"
+    "e2e": "node node_modules/mocha/bin/mocha --timeout=30000 tests/e2e",
+    "visual": "node node_modules/mocha/bin/mocha --timeout=30000 tests/visual"
   },
   "repository": {
     "type": "git",
