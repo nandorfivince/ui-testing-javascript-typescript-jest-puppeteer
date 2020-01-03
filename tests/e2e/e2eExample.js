@@ -2,29 +2,29 @@ const puppeteer = require('puppeteer')
 const expect = require('chai')
 const config = require('../../lib/config')
 const helpers = require('../../lib/helpers')
-const untils = require('../../lib/utils')
+const utils = require('../../lib/utils')
 
 let browser
 let page
 
-    before(async function(){
-        browser = await puppeteer.launch({
-            headless: config.isHeadless,
-            sloMo: config.slowMo,
-            devtools: config.isDevtools,
-            timeout: config.launchTimeout,
-        })
-        page = await browser.newPage()
-        await page.setDefaultTimeout(config.waitingTimeout)
-        await page.setViewport({
-            width: config.viewportWidth,
-            height: config.viewportHeight,
-        })
+before(async function(){
+    browser = await puppeteer.launch({
+        headless: config.isHeadless,
+        sloMo: config.slowMo,
+        devtools: config.isDevtools,
+        timeout: config.launchTimeout,
     })
+    page = await browser.newPage()
+    await page.setDefaultTimeout(config.waitingTimeout)
+    await page.setViewport({
+        width: config.viewportWidth,
+        height: config.viewportHeight,
+    })
+})
 
-    after(async function() {
-        await browser.close()
-    })
+after(async function() {
+    await browser.close()
+})
 
 describe('Login Test', () => {
     const LOGIN_FORM = "#login_form"
@@ -86,15 +86,44 @@ describe('Navbar Links Test', () => {
         await helpers.shouldExist(page, '#online_banking_features')
     })
 
-    // it('', async () => {
-    //     await 
-    // })
+    it('should click on feedback link', async () => {
+        await helpers.click(page, '#feedback')
+        await helpers.shouldExist(page, 'form')
+    })
 
-    // it('', async () => {
-    //     await 
-    // })
+    it('should submit the feedback form', async () => {
+        await helpers.typeText(page, 'Vince', '#name')
+        await helpers.typeText(page, utils.generateEmail(), '#email')
+        await helpers.typeText(page, 'Just Subject', '#subject')
+        await helpers.typeText(page, "just a comment", '#comment')
+        await helpers.click(page, 'input[type="submit"]')
+    })
 
-    // it('', async () => {
-    //     await 
-    // })
+    it('should display success message', async () => {
+        await helpers.shouldExist(page, '#feedback-title')
+        await helpers.waitForText(page, 'body', 'Thank you for your comments')
+
+    })
+})
+
+describe('Forgotten Password', () => {
+    it('should navigate to homepage', async () => {
+        await helpers.loadUrl(page, config.zeroWebAppUrl)
+        await helpers.shouldExist(page, '#online_banking_features')
+    })
+
+    it('should load forgotten password form', async () => {
+        await helpers.loadUrl(page, "http://zero.webappsecurity.com/forgot-password.html")
+        await helpers.waitForText(page, "h3", "Forgotten Password")
+    })
+
+    it('should submit email', async () => {
+        await helpers.typeText(page, utils.generateEmail(), "#user_email")
+        await helpers.click(page, ".btn-primary")
+    })
+
+    it('should display success message', async () => {
+        await helpers.waitForText(page, 'body', "Your password will be sent to the following email")
+
+    })
 })
