@@ -1,13 +1,19 @@
 const puppeteer = require('puppeteer')
 const expect = require('chai')
 
-const config = require('../lib/config')
-const click = require('../lib/helpers').click
-const typeText = require('../lib/helpers').typeText
-const loadUrl = require('../lib/helpers').loadUrl
-const waitForText  = require('../lib/helpers').waitForText
-const pressKey  = require('../lib/helpers').pressKey
-const shouldExsist  = require('../lib/helpers').shouldExsist
+const config = require('../../lib/config')
+
+const click = require('../../lib/helpers').click
+const typeText = require('../../lib/helpers').typeText
+const loadUrl = require('../../lib/helpers').loadUrl
+const waitForText = require('../../lib/helpers').waitForText
+const pressKey = require('../../lib/helpers').pressKey
+const shouldExsist = require('../../lib/helpers').shouldExsist
+
+// const generateID = require('../lib/utils').generateID
+// const generateEmail = require('../lib/utils').generateEmail
+// const generateNumbers = require('../lib/utils').generateNumbers
+const untils = require('../../lib/utils')
 
 describe('My first puppeteer test', () => {
     let browser // give a browser instance
@@ -15,7 +21,8 @@ describe('My first puppeteer test', () => {
 
     before(async function(){
         browser = await puppeteer.launch({
-            headless: config.isHeadless,
+            // headless: config.isHeadless,
+            headless: false,
             sloMo: config.slowMo, // delay between each puppeteer actions
             devtools: config.isDevtools,
             timeout: config.launchTimeout,
@@ -76,7 +83,11 @@ describe('My first puppeteer test', () => {
         await loadUrl(page, config.baseUrl)
         // await page.waitForSelector("#nav-search")
         // await page.type("#nav-search", "javascript")
-        await typeText(page, "javascript", "#nav-search")
+        // await typeText(page, "javascript", "#nav-search")
+        // await typeText(page, generateID(15), "#nav-search")
+        // await typeText(page, generateEmail(), "#nav-search")
+        await typeText(page, untils.generateNumbers(), "#nav-search")
+        await page.waitFor(3000)
         // await page.keyboard.press("Enter")
         await pressKey(page, "Enter")
         await page.waitForXPath('//*[@id="articles-list"]')
