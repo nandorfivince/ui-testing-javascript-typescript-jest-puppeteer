@@ -6,7 +6,8 @@
   "scripts": {
     "basic": "node node_modules/mocha/bin/mocha --timeout=30000 tests/basic",
     "e2e": "node node_modules/mocha/bin/mocha --timeout=30000 tests/e2e",
-    "visual": "node node_modules/mocha/bin/mocha --timeout=30000 tests/visual"
+    "test:snapshot": "jest --config=jest.config.js --detectOpenHandles --forceExit",
+    "test:snapshot:update": "jest --config=jest.config.js --updateSnapshot --detectOpenHandles --forceExit"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,8 @@
   "homepage": "https://github.com/nandorfivince/ui-testing-javascript-typescript-jest-puppeteer#readme",
   "dependencies": {
     "chai": "^4.2.0",
+    "jest": "^24.9.0",
+    "jest-image-snapshot": "^2.11.1",
     "mocha": "^6.2.2",
     "puppeteer": "^2.0.0"
   },
