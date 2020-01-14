@@ -1,19 +1,16 @@
 const puppeteer = require('puppeteer')
-const expect = require('chai')
+const assert = require('chai').assert
 
 const config = require('../../lib/config')
-
-const click = require('../../lib/helpers').click
-const typeText = require('../../lib/helpers').typeText
-const loadUrl = require('../../lib/helpers').loadUrl
-const waitForText = require('../../lib/helpers').waitForText
-const pressKey = require('../../lib/helpers').pressKey
-const shouldExsist = require('../../lib/helpers').shouldExsist
-
-// const generateID = require('../lib/utils').generateID
-// const generateEmail = require('../lib/utils').generateEmail
-// const generateNumbers = require('../lib/utils').generateNumbers
 const untils = require('../../lib/utils')
+const helpers = require('../../lib/helpers')
+
+
+const {
+    getTimeFromPerformanceMetrics,
+    extractDataFromPerformanceMetrics,
+  } = require('./perfHelper')
+
 
 describe('My first puppeteer test', () => {
     let browser // give a browser instance
@@ -22,7 +19,7 @@ describe('My first puppeteer test', () => {
     before(async function(){
         browser = await puppeteer.launch({
             // headless: config.isHeadless,
-            headless: false,
+            headless: true,
             sloMo: config.slowMo, // delay between each puppeteer actions
             devtools: config.isDevtools,
             timeout: config.launchTimeout,
@@ -41,56 +38,53 @@ describe('My first puppeteer test', () => {
 
 
     it('My first test step', async ()=> {
-        // await page.goto("https://dev.to/")
-        // await page.goto(config.baseUrl)
-        await loadUrl(page, config.baseUrl)
-        // await page.waitForSelector("#nav-search")
-        await shouldExsist(page, "#nav-search")
+        await helpers.loadUrl(page, config.baseUrl)
+        await helpers.shouldExsist(page, '//*[@id="nav-search"]')
         const url = await page.url()
         const title = await page.title()
-        // expect(url).to.contain("dev")
-        // expect(title).to.contain("Community")
+        assert.equal(url, "https://dev.to/", "Nooo No")
+        assert.include(title, "DEV Community")
     })
 
     it('browser reload', async () => {
         await page.reload()
-        // await page.waitForSelector('#page-content')
-        await shouldExsist(page, "#page-content")
-        await waitForText(page, 'body', "WRITE A POST")
-
+        await helpers.shouldExsist(page, '//*[@id="articles-list"]')
+        const element = await page.$("#write-link")
+        const text = await page.evaluate(element => element.textContent, element)
+        console.log(">>> : " + text)
+        assert.equal(text, "WRITE A POST", "bla")
         const url = await page.url()
         const title = await page.title()
-        // expect(url).to.contain("dev")
-        // expect(title).to.contain("Community")
+        assert.equal(url, "https://dev.to/", "Nooo No")
+        assert.include(title, "DEV Community")
     })
 
     it('click method', async () => {
-        // await page.goto("https://dev.to/")
-        await loadUrl(page, config.baseUrl)
-        // await page.waitForSelector("#write-link")
+        await helpers.loadUrl(page, config.baseUrl)
         // await page.click("#write-link", { // click funtion with options
         //     button: "left",
         //     clickCount: 2,
         //     delay: 100
         // })
-        await click(page, "#write-link")
-        // await page.waitForSelector(".registration-rainbow")
-        await shouldExsist(page, ".registration-rainbow")
+        await helpers.click(page, '#write-link')
+        await helpers.shouldExsist(page, '//*[@id="page-content-inner"]/div/div[1]/div')
     })
 
     it('submit into searchbox', async () => {
-        // await page.goto("https://dev.to/")
-        await loadUrl(page, config.baseUrl)
-        // await page.waitForSelector("#nav-search")
-        // await page.type("#nav-search", "javascript")
-        // await typeText(page, "javascript", "#nav-search")
-        // await typeText(page, generateID(15), "#nav-search")
-        // await typeText(page, generateEmail(), "#nav-search")
-        await typeText(page, untils.generateNumbers(), "#nav-search")
+        await helpers.loadUrl(page, config.baseUrl)
+        await helpers.typeText(page, untils.generateNumbers(), "#nav-search")
         await page.waitFor(3000)
-        // await page.keyboard.press("Enter")
-        await pressKey(page, "Enter")
+        await helpers.pressKey(page, "Enter")
         await page.waitForXPath('//*[@id="articles-list"]')
     })
 
+    it('measure navigation performance', async () => {
+        // https://michaljanaszek.com/blog/test-website-performance-with-puppeteer
+        await helpers.loadUrl(page, config.baseUrl)
+        const performanceTiming = JSON.parse(
+            await page.evaluate(() => JSON.stringify(window.performance.timing))
+          );
+          console.log(performanceTiming);
+    })
+    
 })

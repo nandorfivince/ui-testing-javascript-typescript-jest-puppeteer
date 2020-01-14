@@ -121,7 +121,7 @@ describe('Forgotten Password', () => {
     })
 
     it('should submit email', async () => {
-        await helpers.typeText(page, utils.generateEmail(), "#user_email")
+        await helpers.typeText(page, utils.generateEmail(), "#docs-insert-menu")
         await helpers.click(page, ".btn-primary")
     })
 
