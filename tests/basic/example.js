@@ -5,13 +5,6 @@ const config = require('../../lib/config')
 const untils = require('../../lib/utils')
 const helpers = require('../../lib/helpers')
 
-
-const {
-    getTimeFromPerformanceMetrics,
-    extractDataFromPerformanceMetrics,
-  } = require('./perfHelper')
-
-
 describe('My first puppeteer test', () => {
     let browser // give a browser instance
     let page // gives methods interacts with browser
@@ -86,5 +79,5 @@ describe('My first puppeteer test', () => {
           );
           console.log(performanceTiming);
     })
-    
+
 })
