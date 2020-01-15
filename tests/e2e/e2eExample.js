@@ -8,6 +8,7 @@ const loginPage = require('../../page-objects/login-page')
 const searchResultsPage = require('../../page-objects/searchResults-page')
 const feedbackPage = require('../../page-objects/feedback-page')
 const feedbackResultsPage = require('../../page-objects/feedbackResults-page')
+const assert = require('chai').assert
 
 let browser
 let page
@@ -44,13 +45,17 @@ describe('Login Test', () => {
     })
 
     it('should submit login form', async () => {
-        await helpers.typeText(page, untils.generateID(), loginPage.USER_NAME)
-        await helpers.typeText(page, untils.generateID(), loginPage.USER_PASSWORD)
+        await helpers.typeText(page, utils.generateID(), loginPage.USER_NAME)
+        await helpers.typeText(page, utils.generateID(), loginPage.USER_PASSWORD)
         await helpers.click(page, loginPage.SUBMIT_BUTTON)
     })
 
     it('should get error message', async () => {
-        await helpers.waitForText(page, '#login_form > div.alert.alert-error', 'Login and/or password are wrong')
+        // await helpers.waitForText(page, 'div.container form#login_form.form-horizontal .alert-error.alert', text)
+        const element = await page.$("div.container form#login_form.form-horizontal .alert-error.alert")
+        const text = await page.evaluate(element => element.textContent, element)
+        let newString = text.replace(/\s+/g|/\n|\r/g,' ').trim()
+        assert.include(newString, "Login and/or password are wrong.")
         await helpers.shouldExist(page, loginPage.LOGIN_FORM)
     })
 })
@@ -67,8 +72,15 @@ describe('Search Test', () => {
     })
 
     it('should display search results', async () => {
-        await helpers.waitForText(page, searchResultsPage.SEARCH_RESULTS, 'Search Results')
-        await helpers.waitForText(page, searchResultsPage.SEARCH_RESULTS_CONTENT, 'No results were found for the query')
+        // await helpers.waitForText(page, searchResultsPage.SEARCH_RESULTS, 'Search Results:')
+        const element = await page.$(searchResultsPage.SEARCH_RESULTS)
+        const text = await page.evaluate(element => element.textContent, element)
+        assert.include(text, "Search Results:")
+
+        // await helpers.waitForText(page, searchResultsPage.SEARCH_RESULTS_CONTENT, 'No results were found for the query')
+        const element2 = await page.$(searchResultsPage.SEARCH_RESULTS_CONTENT)
+        const text2 = await page.evaluate(element2 => element2.textContent, element2)
+        assert.include(text2, "No results were found for the query")
     })
 })
 
@@ -79,8 +91,8 @@ describe('Navbar Links Test', () => {
     })
 
     it('should have correct number of links', async () => {
-        const numberOfLinks = await helpers.getCount("#pages-nav > li")
-        expect(numberOfLinks).to.equal(3)
+        const numberOfLinks = await helpers.getCount('div#online_banking_features.divider.row div.span3')
+        expect(numberOfLinks).to.equal(4)
     })
 })
 
@@ -105,7 +117,10 @@ describe('Navbar Links Test', () => {
 
     it('should display success message', async () => {
         await helpers.shouldExist(page, feedbackResultsPage.FEEDBACK_RESULTS_TITLE)
-        await helpers.waitForText(page, FEEDBACK_RESULTS_CONTENT, 'Thank you for your comments')
+        // await helpers.waitForText(page, feedbackResultsPage.FEEDBACK_RESULTS_CONTENT, 'Thank you for your comments')
+        const element = await page.$(searchResultsPage.SEARCH_RESULTS_CONTENT)
+        const text = await page.evaluate(element => element.textContent, element)
+        assert.include(text, "Thank you for your comments")
     })
 })
 
@@ -117,15 +132,21 @@ describe('Forgotten Password', () => {
 
     it('should load forgotten password form', async () => {
         await helpers.loadUrl(page, "http://zero.webappsecurity.com/forgot-password.html")
-        await helpers.waitForText(page, "h3", "Forgotten Password")
+        // await helpers.waitForText(page, "h3", "Forgotten Password")
+        const element = await page.$("body > div.wrapper > div.container > div > div > div > div > h3")
+        const text = await page.evaluate(element => element.textContent, element)
+        assert.include(text, "Forgotten Password")
     })
 
     it('should submit email', async () => {
-        await helpers.typeText(page, utils.generateEmail(), "#docs-insert-menu")
-        await helpers.click(page, ".btn-primary")
+        await helpers.typeText(page, utils.generateEmail(), "#user_email")
+        await helpers.click(page, "#send_password_form > div.form-actions > input")
     })
 
     it('should display success message', async () => {
-        await helpers.waitForText(page, 'body', "Your password will be sent to the following email")
+        // await helpers.waitForText(page, 'body', "Your password will be sent to the following email")
+        const element = await page.$("body > div.wrapper > div.container > div > div > div")
+        const text2 = await page.evaluate(element => element.textContent, element)
+        assert.include(text2, "Your password will be sent to the following email")
     })
 })

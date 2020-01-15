@@ -32,7 +32,7 @@ describe('My first puppeteer test', () => {
 
     it('My first test step', async ()=> {
         await helpers.loadUrl(page, config.baseUrl)
-        await helpers.shouldExsist(page, '//*[@id="nav-search"]')
+        await helpers.shouldExist(page, '//*[@id="nav-search"]')
         const url = await page.url()
         const title = await page.title()
         assert.equal(url, "https://dev.to/", "Nooo No")
@@ -41,10 +41,9 @@ describe('My first puppeteer test', () => {
 
     it('browser reload', async () => {
         await page.reload()
-        await helpers.shouldExsist(page, '//*[@id="articles-list"]')
+        await helpers.shouldExist(page, '//*[@id="articles-list"]')
         const element = await page.$("#write-link")
         const text = await page.evaluate(element => element.textContent, element)
-        console.log(">>> : " + text)
         assert.equal(text, "WRITE A POST", "bla")
         const url = await page.url()
         const title = await page.title()
@@ -60,7 +59,7 @@ describe('My first puppeteer test', () => {
         //     delay: 100
         // })
         await helpers.click(page, '#write-link')
-        await helpers.shouldExsist(page, '//*[@id="page-content-inner"]/div/div[1]/div')
+        await helpers.shouldExist(page, '//*[@id="page-content-inner"]/div/div[1]/div')
     })
 
     it('submit into searchbox', async () => {

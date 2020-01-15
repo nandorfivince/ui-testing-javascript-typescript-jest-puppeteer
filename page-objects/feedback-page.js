@@ -1,6 +1,6 @@
 module.exports = {
 
-    FEEDBACK_FORM: 'form',
+    FEEDBACK_FORM: '/html/body/div[1]/div[2]/div/div/div',
     FORM_NAME: '#name',
     FORM_EMAIL: '#email',
     FORM_SUBJECT: '#subject',

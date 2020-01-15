@@ -1,6 +1,6 @@
 module.exports = {
 
-    FEEDBACK_RESULTS_TITLE: '#feedback-title',
-    FEEDBACK_RESULTS_CONTENT: 'body',
+    FEEDBACK_RESULTS_TITLE: '//*[@id="feedback-title"]',
+    FEEDBACK_RESULTS_CONTENT: '/html/body/div[1]/div[2]/div/div/div/text()',
 
 }
