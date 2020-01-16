@@ -6,6 +6,7 @@
   "scripts": {
     "basic": "node node_modules/mocha/bin/mocha --timeout=30000 tests/basic",
     "e2e": "node node_modules/mocha/bin/mocha --timeout=30000 tests/e2e",
+    "perf": "node node_modules/mocha/bin/mocha --timeout=30000 tests/performance",
     "test:snapshot": "jest --config=jest.config.js --detectOpenHandles --forceExit",
     "test:snapshot:update": "jest --config=jest.config.js --updateSnapshot --detectOpenHandles --forceExit"
   },
@@ -22,7 +23,6 @@
   "dependencies": {
     "chai": "^4.2.0",
     "chrome-timeline": "0.0.12",
-    "devtools-timeline-model": "^1.4.0",
     "jest": "^24.9.0",
     "jest-image-snapshot": "^2.11.1",
     "mocha": "^6.2.2",

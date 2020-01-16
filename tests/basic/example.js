@@ -83,13 +83,6 @@ describe('My first puppeteer test', () => {
         
         await page.goto("http://localhost:8081/")
         await page.waitFor(1000)
-        // const performanceTiming = JSON.parse(await page.evaluate(() => JSON.stringify(window.performance.timing)))
-        // console.log(performanceTiming)
-        // await page.waitFor(1000)
-    
-        await helpers.typeText(page, "oxytocin", "#marvin-0-frame > div:nth-child(2) > div > div:nth-child(2) > div > input")
-        await helpers.pressKey(page, "Enter")
-    
         const performanceTiming = JSON.parse(await page.evaluate(() => JSON.stringify(window.performance.timing)))
         console.log(performanceTiming)
         await page.waitFor(1000)
