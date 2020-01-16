@@ -1,0 +1,9 @@
+{"message":"runner instance created","level":"info","label":"1","timestamp":"2020-01-15T14:48:17.156Z"}
+{"message":"runner started","level":"info","label":"1","timestamp":"2020-01-15T14:48:17.491Z"}
+{"message":"trace \"TRACE_ABC\" started","level":"info","label":"1","timestamp":"2020-01-15T14:48:18.552Z"}
+{"message":"remote task 1579099698552: (done, window) => {\r\n                // this is within remote browser context\r\n                // await helpers.typeText(page, \"oxytocin\", \"#marvin-0-frame > div:nth-child(2) > div > div:nth-child(2) > div > input\")\r\n                // await helpers.pressKey(page, \"Enter\")\r\n                // call done when finished (sync variant)\r\n                done()\r\n                // or async example with setTimeout\r\n                setTimeout(done, 10000)\r\n            }","level":"info","label":"1","timestamp":"2020-01-15T14:48:18.552Z"}
+{"message":"remote task 1579099698552 ended","level":"info","label":"1","timestamp":"2020-01-15T14:48:18.659Z"}
+{"message":"remote task 1579099698552 loaded","level":"info","label":"1","timestamp":"2020-01-15T14:48:18.660Z"}
+{"message":"trace \"TRACE_ABC\" stopped","level":"info","label":"1","timestamp":"2020-01-15T14:48:18.681Z"}
+{"message":"runner about to end","level":"info","label":"1","timestamp":"2020-01-15T14:48:18.737Z"}
+{"message":"runner ended","level":"info","label":"1","timestamp":"2020-01-15T14:48:18.892Z"}
