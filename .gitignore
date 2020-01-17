@@ -2,3 +2,5 @@
 node_modules
 ./timeline
 timeline
+trace.json
+/trace.json

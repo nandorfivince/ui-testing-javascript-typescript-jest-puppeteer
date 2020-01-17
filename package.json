@@ -26,7 +26,8 @@
     "jest": "^24.9.0",
     "jest-image-snapshot": "^2.11.1",
     "mocha": "^6.2.2",
-    "puppeteer": "^2.0.0"
+    "puppeteer": "^2.0.0",
+    "tracium": "^0.2.1"
   },
   "directories": {
     "test": "tests"
