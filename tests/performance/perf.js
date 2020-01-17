@@ -8,6 +8,7 @@
 // https://github.com/paulirish/automated-chrome-profiling/blob/master/get-timeline-trace.js
 // https://stackoverflow.com/questions/35576174/chrome-developer-toolstimeline-calculating-aggregated-time-from-json-trace-fil
 // https://groups.google.com/forum/#!topic/google-chrome-developer-tools/Xl_n9Gj1gH4
+// https://medium.com/@aslushnikov/automating-clicks-in-chromium-a50e7f01d3fb
 
 // const timeline = require('chrome-timeline').timeline
 // const puppeteer = require('puppeteer')
@@ -125,44 +126,120 @@
 
 const puppeteer = require('puppeteer')
 const helpers = require('../../lib/helpers')
+const config = require('../../lib/config')
 const fs = require('fs')
 const Tracium = require('tracium')
 
+before(async function(){
+    browser = await puppeteer.launch({
+        headless: false,
+        sloMo: 10,
+        devtools: false,
+        timeout: 5000,
+    })
+    page = await browser.newPage()
+    await page.setDefaultTimeout(5000)
+    await page.setViewport({width: 1024,height: 768,})
+})
+
 describe('Puppeteer performance', () => {
 
-    it('test', async ()=> {
-        const browser = await puppeteer.launch({headless: true, timeout: 10000,})
-        const page = await browser.newPage()
-
-        // START TRACE
-        await page.tracing.start({path: 'trace.json'}) //categories: ['devtools.timeline']
-
-        // DO SOMETHING TO BE MEASURED
-        await page.goto('http://localhost:8081/')
-        await helpers.typeText(page, "oxytocin", "#marvin-0-frame > div:nth-child(2) > div > div:nth-child(2) > div > input")
-        await helpers.pressKey(page, "Enter")
+    it('get elements from canvas', async ()=> {
         
-        // STOP TRACE
-        const stories = await page.$$eval('a.storylink', anchors => { return anchors.map(anchor => anchor.textContent).slice(0, 10) })
-        console.log(stories)
-        await page.tracing.stop()
+        await page.goto('http://localhost:8081/')
 
+        // await helpers.typeText(page, "", "")
+        // await helpers.pressKey(page, "")
+        await page.waitFor(1000)
+
+        // const element = page.evaluate(() => document.getElementById(''));
+
+        
+
+        // for (let i = 0; i < 1; i++) {
+        //     console.log(i);
+        //     helpers.click(page, '')
+        //     await helpers.typeText(page, "", "")
+        //     await helpers.pressKey(page, "Enter")
+        //     await page.waitFor(500)
+        // }
+
+        helpers.click(page, '#tool-icon-select')
+        await page.waitFor(1000)
+        await page.click('')
+        await page.waitFor(1000)
+
+        await page.mouse.move(400, 400);
+        await page.waitFor(1000)
+        await page.mouse.down({button: 'left'});
+        await page.waitFor(1000)
+        await page.mouse.move(410, 410);
+        await page.waitFor(1000)
+        await page.mouse.up({button: 'left'});
+        await page.waitFor(1000)
+
+        // const elementHandle = await page.$('');
+
+        // console.log(">>> :" + elementHandle)
+
+
+        await page.waitFor(2000)
+
+        // console.log(">>> :" + element)
         await browser.close()
     })
 
-    it('parse', async ()=> {
-        // PARSE TRACE.JSON
-        const traceJSON = JSON.parse(fs.readFileSync('./trace.json', 'utf8'))
-        // console.log(traceJSON)
-        const tasks = Tracium.computeMainThreadTasks(traceJSON, {flatten: true,});
-        // console.log(">>> " + tasks)
-        let totalScriptTime = 0;
-        for (const task of tasks) {
-        if (task.kind === 'scriptEvaluation' || task.kind === 'scriptParseCompile')
-            totalScriptTime += task.selfTime;
-        }
-        console.log(`Total javascript time: ${Math.round(totalScriptTime*100)/100}ms`);
-    })
+
+    // it('put down   onto canvas', async ()=> {
+    //     const browser = await puppeteer.launch({headless: false, timeout: 10000,})
+    //     const page = await browser.newPage()
+
+    //     // DO SOMETHING TO BE MEASURED
+    //     await page.goto('http://localhost:8081/')
+
+    //     for (let i = 0; i < 9; i++) {
+    //         console.log(i);
+    //         await helpers.typeText(page, "", """)
+    //         await helpers.pressKey(page, "")
+    //         await page.waitFor(1000)
+    //      }
+        
+    //     await browser.close()
+    // })
+
+    // it('test', async ()=> {
+    //     const browser = await puppeteer.launch({headless: true, timeout: 10000,})
+    //     const page = await browser.newPage()
+
+    //     // START TRACE
+    //     await page.tracing.start({path: 'trace.json'}) //categories: ['devtools.timeline']
+
+    //     // DO SOMETHING TO BE MEASURED
+    //     await page.goto('http://localhost:8081/')
+    //     await helpers.typeText(page, "", "")
+    //     await helpers.pressKey(page, "")
+        
+    //     // STOP TRACE
+    //     const stories = await page.$$eval('a.storylink', anchors => { return anchors.map(anchor => anchor.textContent).slice(0, 10) })
+    //     console.log(stories)
+    //     await page.tracing.stop()
+
+    //     await browser.close()
+    // })
+
+    // it('parse', async ()=> {
+    //     // PARSE TRACE.JSON
+    //     const traceJSON = JSON.parse(fs.readFileSync('./trace.json', 'utf8'))
+    //     // console.log(traceJSON)
+    //     const tasks = Tracium.computeMainThreadTasks(traceJSON, {flatten: true,});
+    //     // console.log(">>> " + tasks)
+    //     let totalScriptTime = 0;
+    //     for (const task of tasks) {
+    //     if (task.kind === 'scriptEvaluation' || task.kind === 'scriptParseCompile')
+    //         totalScriptTime += task.selfTime;
+    //     }
+    //     console.log(`Total javascript time: ${Math.round(totalScriptTime*100)/100}ms`);
+    // })
 
 })
 
